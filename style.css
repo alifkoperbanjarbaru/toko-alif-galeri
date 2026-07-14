@@ -13,43 +13,43 @@ header {
 
 header h1 {
     margin: 0;
+    font-size: 24px;
+}
+
+header p {
+    margin-top: 8px;
 }
 
 .produk {
     display: flex;
-    overflow-x: auto;
+    flex-direction: row;
+    overflow-x: scroll;
     gap: 15px;
     padding: 20px;
-    scroll-snap-type: x mandatory;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .produk::-webkit-scrollbar {
-    display: none;
+    height: 5px;
 }
 
 .kartu {
+    background: white;
     min-width: 250px;
-    flex-shrink: 0;
-    background: white;
-    border-radius: 10px;
+    max-width: 250px;
+    border-radius: 12px;
     padding: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    scroll-snap-align: start;
+    box-sizing: border-box;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-.kartu {
-    background: white;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.kartu img {
-    width: 100%;
-    border-radius: 8px;
+.kartu h3 {
+    margin-top: 0;
 }
 
 .harga {
+    font-size: 18px;
     font-weight: bold;
-    color: #198754;
+    color: green;
 }
