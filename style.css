@@ -16,10 +16,25 @@ header h1 {
 }
 
 .produk {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    display: flex;
+    overflow-x: auto;
     gap: 15px;
     padding: 20px;
+    scroll-snap-type: x mandatory;
+}
+
+.produk::-webkit-scrollbar {
+    display: none;
+}
+
+.kartu {
+    min-width: 250px;
+    flex-shrink: 0;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    scroll-snap-align: start;
 }
 
 .kartu {
