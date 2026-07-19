@@ -1,110 +1,80 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+const sheetID = "1KWbsQSVUH-1veZiySoeP5VG5CW2ItdVdMkS7sxjc7TM";
 
-body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-    color:#333;
-}
+const url =
+`https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Katalog`;
 
-/* Header */
-.header{
-    background:#0d6efd;
-    color:#fff;
-    text-align:center;
-    padding:20px;
-}
+const produkDiv = document.getElementById("produk");
 
-.header h1{
-    font-size:28px;
-}
+fetch(url)
+.then(res => res.text())
+.then(data => {
 
-.header p{
-    margin-top:8px;
-    opacity:.9;
-}
+    const json = JSON.parse(
+        data.substring(47).slice(0,-2)
+    );
 
-/* Search */
-.search-box{
-    padding:15px;
-    background:#fff;
-    position:sticky;
-    top:0;
-    z-index:100;
-}
+    const rows = json.table.rows;
 
-.search-box input{
-    width:100%;
-    padding:12px;
-    border-radius:10px;
-    border:1px solid #ddd;
-    font-size:16px;
-}
+    let html = "";
 
-/* Produk */
-.produk{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-    gap:16px;
-    padding:16px;
-}
+    rows.forEach(item=>{
 
-/* Card */
-.kartu{
-    background:#fff;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 3px 10px rgba(0,0,0,.12);
-    transition:.25s;
-}
+        const foto = item.c[0]?.v || "";
+        const merek = item.c[1]?.v || "";
+        const bahan = item.c[2]?.v || "";
+        const ukuran = item.c[3]?.v || "";
+        const warna = item.c[4]?.v || "";
+        const harga = item.c[5]?.v || "";
+        const status = item.c[6]?.v || "";
+        const deskripsi = item.c[7]?.v || "";
 
-.kartu:hover{
-    transform:translateY(-4px);
-}
+        html += `
+        <div class="kartu">
 
-.kartu img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-}
+            <img src="${foto}" alt="${merek}">
 
-.info{
-    padding:12px;
-}
+            <div class="info">
 
-.info h3{
-    font-size:18px;
-    margin-bottom:8px;
-}
+                <h3>${merek}</h3>
 
-.info p{
-    margin:4px 0;
-    font-size:14px;
-}
+                <p>${bahan}</p>
 
-.harga{
-    color:#198754;
-    font-size:20px;
-    font-weight:bold;
-    margin-top:8px;
-}
+                <p>Ukuran : ${ukuran}</p>
 
-.status{
-    display:inline-block;
-    margin-top:10px;
-    padding:5px 10px;
-    border-radius:20px;
-    background:#198754;
-    color:white;
-    font-size:12px;
-    font-weight:bold;
-}
+                <p>Warna : ${warna}</p>
 
-.loading{
-    grid-column:1/-1;
-    text-align:center;
-    padding:40px;
-        }
+                <p class="harga">${harga}</p>
+
+                <span class="status">${status}</span>
+
+                <p>${deskripsi}</p>
+
+            </div>
+
+        </div>
+        `;
+
+    });
+
+    produkDiv.innerHTML = html;
+
+});
+
+const search = document.getElementById("search");
+
+search.addEventListener("keyup",function(){
+
+    const keyword = this.value.toLowerCase();
+
+    document.querySelectorAll(".kartu").forEach(card=>{
+
+        const text = card.innerText.toLowerCase();
+
+        card.style.display =
+        text.includes(keyword)
+        ? "block"
+        : "none";
+
+    });
+
+});
