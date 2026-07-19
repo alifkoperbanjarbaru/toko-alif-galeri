@@ -11,34 +11,52 @@ let semuaProduk = [];
 fetch(url)
   .then(response => {
     if (!response.ok) {
-      throw new Error("Gagal mengambil data.");
+      throw new Error("Gagal mengambil data Google Sheets");
     }
     return response.text();
   })
   .then(text => {
+
     const json = JSON.parse(text.substring(47).slice(0, -2));
 
-    semuaProduk = json.table.rows.map(row => ({
-      foto: row.c[0]?.v || "",
-      merek: row.c[1]?.v || "",
-      bahan: row.c[2]?.v || "",
-      ukuran: row.c[3]?.v || "",
-      warna: row.c[4]?.v || "",
-      harga: row.c[5]?.v || "",
-      status: row.c[6]?.v || "",
-      deskripsi: row.c[7]?.v || ""
-    }));
+    semuaProduk = json.table.rows.map(row => {
+
+      let foto = row.c[0]?.v || "";
+
+      // Ubah link Google Drive menjadi link gambar
+      if (foto.includes("/file/d/")) {
+        const id = foto.match(/\/d\/([^/]+)/);
+        if (id) {
+          foto = `https://drive.google.com/thumbnail?id=${id[1]}&sz=w800`;
+        }
+      }
+
+      return {
+        foto: foto,
+        merek: row.c[1]?.v || "",
+        bahan: row.c[2]?.v || "",
+        ukuran: row.c[3]?.v || "",
+        warna: row.c[4]?.v || "",
+        harga: row.c[5]?.v || "",
+        status: row.c[6]?.v || "",
+        deskripsi: row.c[7]?.v || ""
+      };
+
+    });
 
     tampilkanProduk(semuaProduk);
+
   })
   .catch(error => {
+
     console.error(error);
 
     produkDiv.innerHTML = `
       <div class="loading">
-        ❌ Gagal mengambil data dari Google Sheets.
+        ❌ Gagal mengambil data Google Sheets
       </div>
     `;
+
   });
 
 function tampilkanProduk(data) {
@@ -46,7 +64,7 @@ function tampilkanProduk(data) {
   if (data.length === 0) {
     produkDiv.innerHTML = `
       <div class="loading">
-        Produk tidak ditemukan.
+        Produk tidak ditemukan
       </div>
     `;
     return;
@@ -59,17 +77,17 @@ function tampilkanProduk(data) {
     html += `
       <div class="kartu">
 
-        <img src="${item.foto}" alt="${item.merek}">
+        <img src="${item.foto}" alt="${item.merek}" loading="lazy">
 
         <div class="info">
 
           <h3>${item.merek}</h3>
 
-          <p>${item.bahan}</p>
+          <p><strong>Bahan:</strong> ${item.bahan}</p>
 
-          <p>Ukuran : ${item.ukuran}</p>
+          <p><strong>Ukuran:</strong> ${item.ukuran}</p>
 
-          <p>Warna : ${item.warna}</p>
+          <p><strong>Warna:</strong> ${item.warna}</p>
 
           <p class="harga">${item.harga}</p>
 
@@ -85,6 +103,7 @@ function tampilkanProduk(data) {
   });
 
   produkDiv.innerHTML = html;
+
 }
 
 if (searchInput) {
