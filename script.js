@@ -1,80 +1,107 @@
 const sheetID = "1KWbsQSVUH-1veZiySoeP5VG5CW2ItdVdMkS7sxjc7TM";
+const sheetName = "Katalog";
 
-const url =
-`https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Katalog`;
+const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
 const produkDiv = document.getElementById("produk");
+const searchInput = document.getElementById("search");
+
+let semuaProduk = [];
 
 fetch(url)
-.then(res => res.text())
-.then(data => {
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data.");
+    }
+    return response.text();
+  })
+  .then(text => {
+    const json = JSON.parse(text.substring(47).slice(0, -2));
 
-    const json = JSON.parse(
-        data.substring(47).slice(0,-2)
-    );
+    semuaProduk = json.table.rows.map(row => ({
+      foto: row.c[0]?.v || "",
+      merek: row.c[1]?.v || "",
+      bahan: row.c[2]?.v || "",
+      ukuran: row.c[3]?.v || "",
+      warna: row.c[4]?.v || "",
+      harga: row.c[5]?.v || "",
+      status: row.c[6]?.v || "",
+      deskripsi: row.c[7]?.v || ""
+    }));
 
-    const rows = json.table.rows;
+    tampilkanProduk(semuaProduk);
+  })
+  .catch(error => {
+    console.error(error);
 
-    let html = "";
+    produkDiv.innerHTML = `
+      <div class="loading">
+        ❌ Gagal mengambil data dari Google Sheets.
+      </div>
+    `;
+  });
 
-    rows.forEach(item=>{
+function tampilkanProduk(data) {
 
-        const foto = item.c[0]?.v || "";
-        const merek = item.c[1]?.v || "";
-        const bahan = item.c[2]?.v || "";
-        const ukuran = item.c[3]?.v || "";
-        const warna = item.c[4]?.v || "";
-        const harga = item.c[5]?.v || "";
-        const status = item.c[6]?.v || "";
-        const deskripsi = item.c[7]?.v || "";
+  if (data.length === 0) {
+    produkDiv.innerHTML = `
+      <div class="loading">
+        Produk tidak ditemukan.
+      </div>
+    `;
+    return;
+  }
 
-        html += `
-        <div class="kartu">
+  let html = "";
 
-            <img src="${foto}" alt="${merek}">
+  data.forEach(item => {
 
-            <div class="info">
+    html += `
+      <div class="kartu">
 
-                <h3>${merek}</h3>
+        <img src="${item.foto}" alt="${item.merek}">
 
-                <p>${bahan}</p>
+        <div class="info">
 
-                <p>Ukuran : ${ukuran}</p>
+          <h3>${item.merek}</h3>
 
-                <p>Warna : ${warna}</p>
+          <p>${item.bahan}</p>
 
-                <p class="harga">${harga}</p>
+          <p>Ukuran : ${item.ukuran}</p>
 
-                <span class="status">${status}</span>
+          <p>Warna : ${item.warna}</p>
 
-                <p>${deskripsi}</p>
+          <p class="harga">${item.harga}</p>
 
-            </div>
+          <span class="status">${item.status}</span>
+
+          <p>${item.deskripsi}</p>
 
         </div>
-        `;
 
-    });
+      </div>
+    `;
 
-    produkDiv.innerHTML = html;
+  });
 
-});
+  produkDiv.innerHTML = html;
+}
 
-const search = document.getElementById("search");
+if (searchInput) {
 
-search.addEventListener("keyup",function(){
+  searchInput.addEventListener("input", function () {
 
     const keyword = this.value.toLowerCase();
 
-    document.querySelectorAll(".kartu").forEach(card=>{
+    const hasil = semuaProduk.filter(item =>
+      item.merek.toLowerCase().includes(keyword) ||
+      item.bahan.toLowerCase().includes(keyword) ||
+      item.ukuran.toLowerCase().includes(keyword) ||
+      item.warna.toLowerCase().includes(keyword)
+    );
 
-        const text = card.innerText.toLowerCase();
+    tampilkanProduk(hasil);
 
-        card.style.display =
-        text.includes(keyword)
-        ? "block"
-        : "none";
+  });
 
-    });
-
-});
+}
