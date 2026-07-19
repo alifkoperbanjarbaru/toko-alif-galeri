@@ -1,36 +1,110 @@
-const produk = [
-    {
-        nama: "Koper Contoh",
-        merek: "Polo Team",
-        ukuran: "20 inch",
-        warna: "Hitam",
-        harga: "Rp290.000",
-        status: "Stok",
-        foto: "https://drive.google.com/thumbnail?id=1a97DY1_pI-jhnWAV9TlkNkdnpSrFqRF8&sz=w500"
-    }
-];
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    color:#333;
+}
 
-let tampilan = "";
+/* Header */
+.header{
+    background:#0d6efd;
+    color:#fff;
+    text-align:center;
+    padding:20px;
+}
 
-produk.forEach(item => {
+.header h1{
+    font-size:28px;
+}
 
-    tampilan += `
-    <div class="kartu">
+.header p{
+    margin-top:8px;
+    opacity:.9;
+}
 
-        <img src="${item.foto}" alt="${item.nama}">
+/* Search */
+.search-box{
+    padding:15px;
+    background:#fff;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
 
-        <h3>${item.nama}</h3>
-        <p>Merek: ${item.merek}</p>
-        <p>Ukuran: ${item.ukuran}</p>
-        <p>Warna: ${item.warna}</p>
-        <p class="harga">${item.harga}</p>
-        <p>Status: ${item.status}</p>
+.search-box input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    font-size:16px;
+}
 
-    </div>
-    `;
+/* Produk */
+.produk{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:16px;
+    padding:16px;
+}
 
-});
+/* Card */
+.kartu{
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 3px 10px rgba(0,0,0,.12);
+    transition:.25s;
+}
 
+.kartu:hover{
+    transform:translateY(-4px);
+}
 
-document.getElementById("produk").innerHTML = tampilan;
+.kartu img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.info{
+    padding:12px;
+}
+
+.info h3{
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.info p{
+    margin:4px 0;
+    font-size:14px;
+}
+
+.harga{
+    color:#198754;
+    font-size:20px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.status{
+    display:inline-block;
+    margin-top:10px;
+    padding:5px 10px;
+    border-radius:20px;
+    background:#198754;
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.loading{
+    grid-column:1/-1;
+    text-align:center;
+    padding:40px;
+        }
