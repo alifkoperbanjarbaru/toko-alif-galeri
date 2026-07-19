@@ -72,7 +72,8 @@ fetch(url)
 
     tampilkanProduk(semuaProduk);
 
-}).catch(error => {
+})
+.catch(error => {
 
     console.error(error);
 
@@ -155,7 +156,8 @@ Apakah produk ini masih tersedia?`
 
     produkDiv.innerHTML = html;
 
-}if (searchInput) {
+          }
+if (searchInput) {
 
     searchInput.addEventListener("input", function () {
 
@@ -178,4 +180,4 @@ Apakah produk ini masih tersedia?`
 
     });
 
-                                   }
+}
