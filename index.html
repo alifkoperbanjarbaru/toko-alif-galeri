@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Alif Koper</title>
+    <title>Katalog Toko Alif Koper</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-    <h1>Toko Alif Koper</h1>
-    <p>Katalog Produk</p>
+<header class="header">
+    <h1>🧳 Toko Alif Koper</h1>
+    <p>Pilih koper favoritmu</p>
 </header>
 
+<div class="search-box">
+    <input
+        type="text"
+        id="search"
+        placeholder="🔍 Cari merek, ukuran, warna..."
+    >
+</div>
+
 <div id="produk" class="produk">
-    <p>Memuat produk...</p>
+    <p class="loading">Memuat katalog...</p>
 </div>
 
 <script src="script.js"></script>
