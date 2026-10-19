@@ -1,33 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Toko Alif Koper</title>
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d2444">
+  <title>Katalog Toko Alif Koper</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header class="header">
+  <header class="header">
     <h1>🧳 Toko Alif Koper</h1>
-    <p>Pilih koper favoritmu</p>
-</header>
+    <p id="subjudul">Temukan koper yang cocok untuk perjalananmu</p>
+  </header>
 
-<div class="search-box">
-    <input
-        type="text"
-        id="search"
-        placeholder="🔍 Cari merek, ukuran, warna..."
-    >
-</div>
+  <main class="container">
 
-<div id="produk" class="produk">
-    <p class="loading">Memuat katalog...</p>
-</div>
+    <!-- Tombol kembali, hanya muncul di halaman ukuran -->
+    <a id="tombol-kembali" class="tombol-kembali" href="./" hidden>
+      ← Kembali ke Pilihan Ukuran
+    </a>
 
-<script src="script.js"></script>
+    <!-- HALAMAN 1: PILIHAN UKURAN -->
+    <section id="halaman-ukuran">
+      <div class="judul-bagian">
+        <h2>Pilih Ukuran Koper</h2>
+        <p>Pilih ukuran untuk melihat koleksi yang tersedia.</p>
+      </div>
 
+      <div id="pilihan-ukuran" class="pilihan-ukuran">
+        <p class="loading">Memuat pilihan ukuran...</p>
+      </div>
+    </section>
+
+    <!-- HALAMAN 2: PRODUK SESUAI UKURAN -->
+    <section id="halaman-produk" hidden>
+      <div class="judul-bagian">
+        <h2 id="judul-katalog">Koleksi Koper</h2>
+        <p id="deskripsi-katalog">Pilih koper favoritmu.</p>
+      </div>
+
+      <div class="search-box">
+        <input
+          type="search"
+          id="search"
+          placeholder="Cari merek, warna, atau model..."
+          autocomplete="off"
+        >
+      </div>
+
+      <div id="produk" class="produk">
+        <p class="loading">Memuat produk...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© Toko Alif Koper</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
